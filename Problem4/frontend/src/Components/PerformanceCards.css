@@ -1,0 +1,26 @@
+.performance-card {
+    width: 12rem;
+    height: 12rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #1E40AF !important; /* Blue color */
+    color: white !important;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 2em;
+  }
+  
+  .card-title {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  
+  .card-value {
+    font-weight: 700;
+    font-size: 2.25rem;
+    margin-top: 0.5rem;
+  }
+  

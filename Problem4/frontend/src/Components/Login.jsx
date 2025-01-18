@@ -1,24 +1,51 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Typography, TextField, Button, Box } from "@mui/material";
+import { toast } from "react-toastify"; // Ensure correct import
+import "react-toastify/dist/ReactToastify.css"; // Ensure correct import
 
-const Login = ({ setUserRole }) => {
+const Login = ({  }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/login", { username, password });
-      const { role } = response.data;
-      setUserRole(role);
-      if (role === "agent") {
-        window.location.href = "/agent-dashboard";
-      } else if (role === "admin") {
-        window.location.href = "/admin-dashboard";
+      const response = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+        credentials: 'include', // To include cookies (session)
+      });
+      
+
+
+      if (response.ok) {
+      const data = await response.json();
+      console.log(data.user);
+      sessionStorage.setItem("userData",JSON.stringify(data.user))
+
+        const { role } = data.user;
+        toast.success("Login successful!", {
+          position: "top-center",  // Fixed toast positioning
+        });
+
+        if (role === "agent") {
+          window.location.href = "/agent-dashboard";
+        } else if (role === "admin") {
+          window.location.href = "/admin-dashboard";
+        }
+      } else {
+        toast.error(data.message || "Login failed.", {
+          position: "top-center",  // Fixed toast positioning
+        });
       }
     } catch (err) {
-      console.error("Login failed", err);
+      console.error("Error during login", err);
+      toast.error("Something went wrong, please try again later.", {
+        position: "top-center",  // Fixed toast positioning
+      });
     }
   };
 
@@ -29,7 +56,7 @@ const Login = ({ setUserRole }) => {
         justifyContent: "center",
         alignItems: "center",
         minHeight: "100vh",
-        backgroundColor: "#fafafa", 
+        backgroundColor: "#fafafa",
         padding: 2,
       }}
     >
@@ -38,8 +65,8 @@ const Login = ({ setUserRole }) => {
           maxWidth: 400,
           width: "100%",
           borderRadius: 2,
-          boxShadow: 1, 
-          backgroundColor: "#ffffff", 
+          boxShadow: 1,
+          backgroundColor: "#ffffff",
           overflow: "hidden",
           padding: 4,
         }}
@@ -51,7 +78,7 @@ const Login = ({ setUserRole }) => {
           gutterBottom
           sx={{
             fontWeight: 600,
-            color: "#333333", 
+            color: "#333333",
           }}
         >
           Welcome Back
@@ -103,9 +130,9 @@ const Login = ({ setUserRole }) => {
                 padding: "10px 0",
                 fontWeight: "bold",
                 borderRadius: "8px",
-                backgroundColor: "#5e81f4", 
+                backgroundColor: "#5e81f4",
                 "&:hover": {
-                  backgroundColor: "#4a70d1", 
+                  backgroundColor: "#4a70d1",
                 },
               }}
             >
