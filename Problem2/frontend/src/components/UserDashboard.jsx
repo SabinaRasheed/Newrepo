@@ -1,7 +1,8 @@
-import React from "react";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
-import { Button, Typography } from "@mui/material";
+import { Button } from "@mui/material";
+import { Heading } from "@radix-ui/themes";
+
 
 const Dashboard = () => {
   // Get user data from sessionStorage
@@ -18,16 +19,12 @@ const Dashboard = () => {
       <Navbar />
       <div className="container mx-auto p-8">
         {/* Dashboard Heading */}
-        <Typography variant="h3" component="h1" className="font-bold mb-4">
-          Dashboard
-        </Typography>
+        <Heading size={"8"}>Dashboard</Heading>
 
-        {/* Welcome Message */}
-        <Typography variant="h5" className="text-xl mb-6">
-          Hello, {userData.username}!
-        </Typography>
 
-        {/* Button to View Tasks */}
+        <Heading size={"5"} weight={"light"}>Welcome back {userData.username}</Heading>
+
+
         <Button
           onClick={handleGoToTasks}
           variant="contained"
