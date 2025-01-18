@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Box, Button, TextField, Typography, Container } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -12,9 +15,31 @@ const LoginForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login Details:", formData);
+
+    try {
+      const response = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        // Use sessionStorage instead of Cookies
+        sessionStorage.setItem("userData", JSON.stringify(data)); // Store the user data in sessionStorage
+
+        if (data.userrole === "User") {
+          navigate("/userdashboard");
+        } else if (data.userrole === "Manager") {
+          navigate("/admindashboard");
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
