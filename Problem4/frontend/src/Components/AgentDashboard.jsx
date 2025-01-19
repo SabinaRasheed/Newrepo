@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, Box, Typography } from "@mui/material";
 import Navbar from "./Navbar";
 import PerformanceCards from "./PerformanceCards";
+import PerformanceMetricsChart from "./PerformanceMetricsChart";
 
 const AgentDashboard = () => {
   const [performanceData, setPerformanceData] = useState(null);
@@ -65,6 +66,7 @@ const AgentDashboard = () => {
   return (
     <>
       <Navbar />
+      <PerformanceMetricsChart/>
       <div
         style={{
           display: "flex",
