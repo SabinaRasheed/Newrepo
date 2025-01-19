@@ -5,7 +5,7 @@ import mysql from "mysql2";
 const pool = mysql.createPool({
   host: "localhost", // Your MySQL server address
   user: "root", // Your MySQL username (e.g., 'root')
-  password: "Rayyanali123", // Your MySQL password
+  password: "amal1234", // Your MySQL password
   database: "world", // The name of your database
   waitForConnections: true,
   connectionLimit: 10,
