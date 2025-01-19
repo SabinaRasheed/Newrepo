@@ -38,15 +38,7 @@ const Navbar = () => {
     >
       <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", px: 3 }}>
         <Box display="flex" alignItems="center" gap={1}>
-          <img
-            src="/logo.png"
-            alt="Logo"
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: "8px",
-            }}
-          />
+         
           <Typography
             variant="h5"
             sx={{
@@ -56,7 +48,7 @@ const Navbar = () => {
               textShadow: "1px 1px 4px rgba(0, 0, 0, 0.3)",
             }}
           >
-            MyApp
+            Call Center
           </Typography>
         </Box>
 
