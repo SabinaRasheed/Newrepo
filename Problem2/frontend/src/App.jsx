@@ -5,9 +5,12 @@ import UserDashboard from "./components/UserDashboard";
 import AdminDashboard from "./components/AdminDashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import TasksPage from "./components/UserTasks";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
+    <>
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
@@ -38,6 +41,8 @@ const App = () => {
         />
       </Routes>
     </Router>
+    <ToastContainer />
+    </>
   );
 };
 

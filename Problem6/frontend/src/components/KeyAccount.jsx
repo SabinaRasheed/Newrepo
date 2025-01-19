@@ -172,9 +172,7 @@ const KeyAccount = () => {
                                     Cancel
                                 </Button>
                             </Dialog.Close>
-                            <Dialog.Close>
                                 <Button type="submit">Save</Button>
-                            </Dialog.Close>
                         </Flex>
 
 

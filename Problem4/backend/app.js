@@ -7,12 +7,11 @@ const session = require("express-session");
 const app = express();
 const port = 5000;
 
-// MySQL Database Connection
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "amal1234",
-  database: "sys",
+  password: "sabina123",
+  database: "hackathon",
 });
 
 db.connect((err) => {
@@ -23,29 +22,27 @@ db.connect((err) => {
   }
 });
 
-// Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173", // Your frontend URL
+    origin: "http://localhost:5173", 
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true, // Allow cookies to be sent with requests
+    credentials: true, 
   })
 );
 
-// Session setup
+
 app.use(
   session({
     secret: "keyboard cat",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, httpOnly: true }, // Set secure: true in production with HTTPS
+    cookie: { secure: false, httpOnly: true }, 
   })
 );
 
-// Login API
 app.post("/api/login", async (req, res) => {
   const { username, password } = req.body;
   try {
@@ -57,9 +54,7 @@ app.post("/api/login", async (req, res) => {
       return res.status(401).json({ message: "Incorrect username." });
     }
 
-    // Check password (assuming plaintext in the database)
     if (password === user[0].password) {
-      // Store user info in session
 
       res.json({ user: user[0], message: "Login successful!" });
     } else {
@@ -73,7 +68,6 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-// Endpoint to fetch performance summary data
 app.get("/api/performance-summary/:userId", async (req, res) => {
   const userId = req.params.userId;
 
@@ -86,7 +80,7 @@ app.get("/api/performance-summary/:userId", async (req, res) => {
       );
 
     if (rows.length > 0) {
-      res.json(rows[0]); // Send the latest performance summary data for the user
+      res.json(rows[0]); 
     } else {
       res
         .status(404)
@@ -100,7 +94,7 @@ app.get("/api/performance-summary/:userId", async (req, res) => {
 
 app.get("/api/performance-metrics", async (req, res) => {
   try {
-    const userId = req.query.userId; // Example: userId=1
+    const userId = req.query.userId; 
     console.log(userId);
 
     const query = `
@@ -124,10 +118,10 @@ WHERE
 GROUP BY day_of_week;
     `;
 
-    // Await the query result
+
     const [results] = await db.promise().query(query, [userId]);
 
-    // Prepare response data
+
     const days = [
       "Sunday",
       "Monday",
@@ -147,22 +141,22 @@ GROUP BY day_of_week;
     };
 
     results.forEach((row) => {
-      metrics.days.push(days[row.day_of_week - 1]); // Map day_of_week to day name
+      metrics.days.push(days[row.day_of_week - 1]); 
       metrics.totalCalls.push(row.total_calls);
       metrics.totalCallDuration.push(row.total_call_duration);
-      metrics.avgCallDuration.push(row.average_call_duration); // Format to 2 decimals
+      metrics.avgCallDuration.push(row.average_call_duration); 
       metrics.connectedCalls.push(row.connected_calls);
       metrics.notConnectedCalls.push(row.not_connected_calls);
     });
 
-    res.json(metrics); // Send metrics as a JSON response
+    res.json(metrics); 
   } catch (error) {
     console.error("Error fetching performance metrics:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-// Start the server
+
 app.listen(port, () => {
   console.log(`App is listening on port ${port}`);
 });

@@ -7,9 +7,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 const Navbar = () => {
   const navigate = useNavigate();
 
-  // Retrieving user data from session storage
   const user = JSON.parse(sessionStorage.getItem("userData")) || {};
-  const { id, name, username } = user; // Dynamically retrieving id
+  const { id, name, username } = user; 
   const profileInitial = username ? username.charAt(0).toUpperCase() : "U";
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -32,15 +31,12 @@ const Navbar = () => {
     <AppBar
       position="sticky"
       sx={{
-        background: "linear-gradient(135deg, #5e81f4, #4a70d1)", // Gradient colors matching login button
+        background: "linear-gradient(135deg, #5e81f4, #4a70d1)", 
         boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)",
-        borderRadius: "8px", // Rounded edges like login form
-        mx: 2, // Add horizontal margin for a sleeker look
-        mt: 2, // Top margin
+        
       }}
     >
       <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", px: 3 }}>
-        {/* Logo and App Name */}
         <Box display="flex" alignItems="center" gap={1}>
           <img
             src="/logo.png"
@@ -48,7 +44,7 @@ const Navbar = () => {
             style={{
               width: 40,
               height: 40,
-              borderRadius: "8px", // Consistent rounded edges
+              borderRadius: "8px",
             }}
           />
           <Typography
@@ -57,7 +53,7 @@ const Navbar = () => {
               color: "#ffffff",
               fontWeight: "bold",
               letterSpacing: "1px",
-              textShadow: "1px 1px 4px rgba(0, 0, 0, 0.3)", // Subtle text shadow
+              textShadow: "1px 1px 4px rgba(0, 0, 0, 0.3)",
             }}
           >
             MyApp

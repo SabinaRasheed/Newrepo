@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, MenuItem, Button, Typography } from "@mui/material";
+import { Menu, MenuItem, Button, Typography, Box } from "@mui/material";
 import { ArrowDropDown } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
@@ -69,17 +69,33 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex justify-between items-center p-4 bg-gray-800 text-white">
-      <Typography variant="h6" className="text-xl font-semibold">
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "16px 32px",
+        background: "linear-gradient(90deg, #4e73df, #1cc88a)",
+        color: "white",
+      }}
+    >
+      <Typography variant="h6" sx={{ fontWeight: "bold", fontSize: "24px" }}>
         LOGO
       </Typography>
-      <div className="flex items-center space-x-4">
+      <Box sx={{ display: "flex", alignItems: "center", gap: "16px" }}>
         <Button
           variant="contained"
-          color="secondary"
+          sx={{
+            backgroundColor: "#f39c12",
+            borderRadius: "24px",
+            padding: "8px 16px",
+            textTransform: "none",
+            "&:hover": {
+              backgroundColor: "#e67e22",
+            },
+          }}
           endIcon={<ArrowDropDown />}
-          onClick={handleMenuOpen}
-        >
+          onClick={handleMenuOpen}>
           {status}
         </Button>
         <Menu
@@ -93,11 +109,25 @@ const Navbar = () => {
           <MenuItem onClick={() => handleStatusChange("Busy")}>Busy</MenuItem>
           <MenuItem onClick={() => handleStatusChange("Away")}>Away</MenuItem>
         </Menu>
-        <Button variant="outlined" color="error" onClick={handleLogout}>
+        <Button
+          variant="outlined"
+          sx={{
+            borderRadius: "24px",
+            padding: "8px 16px",
+            borderColor: "#e74c3c",
+            color: "#e74c3c",
+            textTransform: "none",
+            "&:hover": {
+              borderColor: "#c0392b",
+              backgroundColor: "#e74c3c",
+              color: "white",
+            },
+          }}
+          onClick={handleLogout}>
           Logout
         </Button>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

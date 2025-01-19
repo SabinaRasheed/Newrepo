@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Box, Button, TextField, Container } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Heading } from "@radix-ui/themes"
+import { toast } from "react-toastify"; 
+import "react-toastify/dist/ReactToastify.css";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -18,7 +20,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       const response = await fetch("http://localhost:5000/api/login", {
         method: "POST",
@@ -27,21 +29,32 @@ const LoginForm = () => {
         },
         body: JSON.stringify(formData),
       });
+  
       if (response.ok) {
         const data = await response.json();
         // Use sessionStorage instead of Cookies
         sessionStorage.setItem("userData", JSON.stringify(data)); // Store the user data in sessionStorage
-
+  
+        toast.success("Login successful!", {
+          position: "top-center" // Fixed toast positioning
+        });
+  
         if (data.userrole === "User") {
           navigate("/userdashboard");
         } else if (data.userrole === "Manager") {
           navigate("/admindashboard");
         }
+      } else {
+        // Show error toast if login fails
+        toast.error("Incorrect email or password. Please try again.",{position: "top-center"});
       }
+  
     } catch (err) {
       console.error(err);
+      toast.error("An error occurred. Please try again.");
     }
   };
+  
 
   return (
     <div className="flex justify-center items-center min-h-screen">
