@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Typography, TextField, Button, Box } from "@mui/material";
-import { toast } from "react-toastify"; // Ensure correct import
-import "react-toastify/dist/ReactToastify.css"; // Ensure correct import
+import { toast } from "react-toastify"; 
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = ({  }) => {
   const [username, setUsername] = useState("");
@@ -16,38 +16,46 @@ const Login = ({  }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ username, password }),
-        credentials: 'include', // To include cookies (session)
+        credentials: "include", // To include cookies (session)
       });
-      
-
-
+  
+      const data = await response.json(); // Parse the response JSON
+  
       if (response.ok) {
-      const data = await response.json();
-      console.log(data.user);
-      sessionStorage.setItem("userData",JSON.stringify(data.user))
-
+        // Login successful
+        console.log(data.user);
+        sessionStorage.setItem("userData", JSON.stringify(data.user));
+  
         const { role } = data.user;
         toast.success("Login successful!", {
-          position: "top-center",  // Fixed toast positioning
+          position: "top-center", // Fixed toast positioning
         });
-
+  
         if (role === "agent") {
           window.location.href = "/agent-dashboard";
         } else if (role === "admin") {
           window.location.href = "/admin-dashboard";
         }
       } else {
-        toast.error(data.message || "Login failed.", {
-          position: "top-center",  // Fixed toast positioning
-        });
+        // Login failed - Display error from backend response
+        if (data.message) {
+          toast.error(data.message, {
+            position: "top-center", // Fixed toast positioning
+          });
+        } else {
+          toast.error("Login failed. Please try again.", {
+            position: "top-center",
+          });
+        }
       }
     } catch (err) {
       console.error("Error during login", err);
-      toast.error("Something went wrong, please try again later.", {
-        position: "top-center",  // Fixed toast positioning
+      toast.error("Something went wrong. Please try again later.", {
+        position: "top-center", // Fixed toast positioning
       });
     }
   };
+  
 
   return (
     <Box

@@ -2,6 +2,8 @@ import { BrowserRouter, Route, Routes, Navigate, useNavigate } from "react-route
 import React, { useEffect, useState } from "react";
 import Login from "./Components/Login";
 import AgentDashboard from "./Components/AgentDashboard";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   const [userRole, setUserRole] = useState(null)
@@ -26,7 +28,7 @@ const App = () => {
     return children;
   };
 
-  return (
+  return (<>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
@@ -40,6 +42,8 @@ const App = () => {
         />
       </Routes>
     </BrowserRouter>
+    <ToastContainer />
+    </>
   );
 };
 

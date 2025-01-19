@@ -1,58 +1,155 @@
-import React from 'react';
-import { AppBar, Toolbar, Typography, IconButton, Avatar } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { FaSignOutAlt } from 'react-icons/fa';  // For the logout icon
+import React from "react";
+import { AppBar, Toolbar, Typography, IconButton, Avatar, Box, Menu, MenuItem, Divider } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { FaSignOutAlt } from "react-icons/fa";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const Navbar = () => {
   const navigate = useNavigate();
 
-  // Retrieve user data from sessionStorage
-  const user = JSON.parse(sessionStorage.getItem('userData')) || {};
-  const { name, id, username } = user;
+  // Retrieving user data from session storage
+  const user = JSON.parse(sessionStorage.getItem("userData")) || {};
+  const { id, name, username } = user; // Dynamically retrieving id
+  const profileInitial = username ? username.charAt(0).toUpperCase() : "U";
 
-  // Function to handle logout
-  const handleLogout = () => {
-    sessionStorage.removeItem('userData');  // Remove user from sessionStorage
-    navigate('/');  // Redirect to login page
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  // Generate profile picture using the first letter of the user's name
-  const profileInitial = username ? username.charAt(0).toUpperCase() : 'U';  // Default to 'U' for undefined names
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("userData");
+    navigate("/");
+  };
 
   return (
-    <AppBar position="sticky" className="bg-blue-600">
-      <Toolbar className="flex justify-between items-center">
-        {/* Logo and app name on the left */}
-        <div className="flex items-center space-x-2">
-          <img src="/logo.png" alt="Logo" className="w-8 h-8" />
-          <Typography variant="h6" className="text-white font-bold">
+    <AppBar
+      position="sticky"
+      sx={{
+        background: "linear-gradient(135deg, #5e81f4, #4a70d1)", // Gradient colors matching login button
+        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)",
+        borderRadius: "8px", // Rounded edges like login form
+        mx: 2, // Add horizontal margin for a sleeker look
+        mt: 2, // Top margin
+      }}
+    >
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", px: 3 }}>
+        {/* Logo and App Name */}
+        <Box display="flex" alignItems="center" gap={1}>
+          <img
+            src="/logo.png"
+            alt="Logo"
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: "8px", // Consistent rounded edges
+            }}
+          />
+          <Typography
+            variant="h5"
+            sx={{
+              color: "#ffffff",
+              fontWeight: "bold",
+              letterSpacing: "1px",
+              textShadow: "1px 1px 4px rgba(0, 0, 0, 0.3)", // Subtle text shadow
+            }}
+          >
             MyApp
           </Typography>
-        </div>
+        </Box>
 
-        {/* User profile, avatar, and logout button on the right */}
-        <div className="flex items-center space-x-4">
-          {/* Profile description */}
-          <div className="text-white text-sm text-right">
-            <p className="font-semibold">{name}</p>
-            <p className="text-xs">ID: {id}</p>
-          </div>
+        {/* User Profile Section */}
+        <Box display="flex" alignItems="center" gap={2}>
+          <Box sx={{ textAlign: "right", color: "white", "&:hover": { cursor: "pointer" } }}>
+            <Typography
+              variant="body1"
+              sx={{
+                fontWeight: 600,
+                textTransform: "capitalize",
+              }}
+            >
+              {username || "Guest"}
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                opacity: 0.7,
+                fontStyle: "italic",
+              }}
+            >
+              Welcome,
+            </Typography>
+          </Box>
 
-          {/* Profile picture */}
           <Avatar
-            alt="User Profile"
-            className="bg-blue-500 text-white"
-            sx={{ width: 40, height: 40 }}
+            sx={{
+              bgcolor: "#FF6F00",
+              width: 48,
+              height: 48,
+              border: "2px solid white",
+              fontWeight: "bold",
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)", // Add subtle shadow
+            }}
           >
             {profileInitial}
           </Avatar>
 
-          {/* Logout button */}
-          <IconButton color="inherit" onClick={handleLogout} aria-label="logout">
-            <FaSignOutAlt className="text-white" />
+          {/* Menu Button */}
+          <IconButton
+            color="inherit"
+            onClick={handleMenuOpen}
+            sx={{
+              "&:hover": {
+                backgroundColor: "transparent", // Clean hover
+              },
+            }}
+          >
+            <MoreVertIcon />
           </IconButton>
-        </div>
+        </Box>
       </Toolbar>
+
+      {/* Dropdown Menu */}
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleMenuClose}
+        sx={{
+          "& .MuiMenu-paper": {
+            borderRadius: "12px", // Rounded menu
+            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.15)", // Subtle shadow
+          },
+          "& .MuiMenuItem-root": {
+            fontWeight: 500,
+            borderRadius: "8px", // Rounded menu items
+          },
+        }}
+      >
+        <MenuItem disabled sx={{ fontWeight: 600 }}>
+          {name || "User"}
+        </MenuItem>
+        <Divider />
+        <MenuItem
+          onClick={handleLogout}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            color: "#D32F2F",
+            "&:hover": {
+              backgroundColor: "rgba(211, 47, 47, 0.1)", // Subtle hover effect
+            },
+          }}
+        >
+          <FaSignOutAlt /> Logout
+        </MenuItem>
+      </Menu>
     </AppBar>
   );
 };
